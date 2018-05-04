@@ -1,0 +1,29 @@
+@charset "utf-8";
+/* 你自己的样式 */
+
+/* 退款结账之类的弹出层样式 */
+/*
+	1、收银记账
+*/
+/* 小标题的宽度 */
+.row-cl-label-width{
+	width: 110px;
+	text-align: right !important;
+	word-break: keep-all;
+	white-space: nowrap;
+}
+/* 最后一栏btn的位置设置 */
+.row-cl-btn-content{
+	text-align: center; 
+	margin-top: 3rem !important;
+	word-break: keep-all; 
+	white-space: nowrap;
+}
+.lzh-cancel-btn{
+	margin-left: -4px; 
+	width: initial;
+}
+
+
+
+

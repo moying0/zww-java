@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+    >
+
+<mapper namespace="com.bfei.icrane.core.dao.SrvReqDao" >
+	<resultMap id="BaseResultMap" type="SrvReq" >
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="sr_number" property="srNumber" jdbcType="VARCHAR" />
+	    <result column="sr_type" property="srType" jdbcType="VARCHAR" />
+	    <result column="sr_status" property="srStatus" jdbcType="VARCHAR" />
+	    <result column="sr_content" property="srContent" jdbcType="VARCHAR" />
+	    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+	    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    	id, sr_number, sr_type, sr_status, sr_content, created_date, created_by
+  	</sql>
+  	<insert id="insert" parameterType="SrvReq" >
+    insert into t_srv_req (id, sr_number, sr_type, 
+      sr_status, sr_content, created_date, 
+      created_by)
+    values (#{id,jdbcType=INTEGER}, #{srNumber,jdbcType=VARCHAR}, #{srType,jdbcType=VARCHAR}, 
+      #{srStatus,jdbcType=VARCHAR}, #{srContent,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=INTEGER})
+    </insert>
+  	<insert id="insertSelective" parameterType="SrvReq" >
+    insert into t_srv_req
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="srNumber != null" >
+        sr_number,
+      </if>
+      <if test="srType != null" >
+        sr_type,
+      </if>
+      <if test="srStatus != null" >
+        sr_status,
+      </if>
+      <if test="srContent != null" >
+        sr_content,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="srNumber != null" >
+        #{srNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="srType != null" >
+        #{srType,jdbcType=VARCHAR},
+      </if>
+      <if test="srStatus != null" >
+        #{srStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="srContent != null" >
+        #{srContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=INTEGER},
+      </if>
+    </trim>
+  	</insert>
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	    delete from t_srv_req
+	    where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<update id="updateByPrimaryKeySelective" parameterType="SrvReq" >
+	    update t_srv_req
+	    <set >
+	      <if test="srNumber != null" >
+	        sr_number = #{srNumber,jdbcType=VARCHAR},
+	      </if>
+	      <if test="srType != null" >
+	        sr_type = #{srType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="srStatus != null" >
+	        sr_status = #{srStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="srContent != null" >
+	        sr_content = #{srContent,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createdDate != null" >
+	        created_date = #{createdDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createdBy != null" >
+	        created_by = #{createdBy,jdbcType=INTEGER},
+	      </if>
+	    </set>
+  	  	where id = #{id,jdbcType=INTEGER}
+  	</update>
+  	<update id="updateByPrimaryKey" parameterType="SrvReq" >
+    update t_srv_req
+    set sr_number = #{srNumber,jdbcType=VARCHAR},
+      sr_type = #{srType,jdbcType=VARCHAR},
+      sr_status = #{srStatus,jdbcType=VARCHAR},
+      sr_content = #{srContent,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  	</update>
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    	select 
+   	    <include refid="Base_Column_List" />
+	    from t_srv_req
+	    where id = #{id,jdbcType=INTEGER}
+ 	</select>
+ 	<select id="select" resultMap="BaseResultMap">
+ 		select
+ 		<include refid="Base_Column_List" />
+	    from t_srv_req 
+	    where created_by=#{createdBy}
+	    order by created_date desc
+	    limit #{page},#{pageSize}
+ 	</select>
+ 	<select id="count" resultType="java.lang.Integer" >
+    	select count(*) from t_srv_req 
+  	</select>
+
+    <select id="selectAll" resultType="com.bfei.icrane.core.models.vo.MemberFeedbackAll">
+        select
+        a.id id, a.sr_number srNumber, a.sr_type srType, a.sr_status srStatus, a.sr_content srContent, a.created_date createdDate, a.created_by createdBy,
+        b.memberID memberId, b.name name
+        from t_srv_req a LEFT JOIN t_member b on a.created_by=b.id
+        where 1=1
+        <if test="memberId != null" >
+            and b.memberID=#{memberId}
+        </if>
+        order by a.created_date desc
+        limit #{page},#{pageSize}
+    </select>
+
+    <select id="totalCount" resultType="java.lang.Integer" >
+        select count(*) from t_srv_req
+        where 1=1
+        <if test="memberId != null" >
+            and b.memberID=#{memberId}
+        </if>
+    </select>
+  	<!-- <select id="test" parameterType="Integer[]" resultMap="BaseResultMap">
+  		select 
+  		<include refid="Base_Column_List" />
+  		from t_srv_req 
+  		<where>
+	  		id
+	  		<foreach collection="array" item="id" open="in (" close=")" separator=",">
+	  			#{id}
+	  		</foreach>
+  		</where>
+  		order by created_date desc limit 1
+  	</select> -->
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.DivinationDao">
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.DivinationTopic">
+        <id column="id" property="id"/>
+        <result column="divination_name" property="divinationName"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="modified_date" property="modifiedDate"/>
+        <result column="modified_by" property="modifiedBy"/>
+        <result column="modeUrl" property="modeUrl"/>
+        <result column="wxpireTime" property="wxpireTime"/>
+    </resultMap>
+
+    <select id="getDivinationIdByDollId" resultType="java.lang.Integer">
+        SELECT
+            divination_id
+        FROM
+            doll_divination
+        WHERE
+            doll_id = #{dollId};
+    </select>
+    <select id="getByDollId" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            divination_topic dt
+        LEFT JOIN doll_divination dd ON dt.id = dd.divination_id
+        WHERE
+            dd.doll_id = #{dollId};
+    </select>
+    <select id="divination" resultType="com.bfei.icrane.core.models.DivinationImage">
+       SELECT
+            *
+        FROM
+            divination_image
+        WHERE
+            divination_topic_id = #{id}
+        ORDER BY
+            rand()
+        LIMIT 1;
+    </select>
+
+</mapper>
+
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.DollRepairsDao">
+
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.DollRepairs">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="doll_id" property="dollId" jdbcType="INTEGER"/>
+        <result column="repairs_season" property="repairsReason" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="modified_date" property="modifyDate"
+                jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id,doll_id, repairs_season,
+        creat_date,modify_date
+    </sql>
+
+    <!--查询报修总条数-->
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM doll_repairs
+        WHERE 1=1
+        <!--<if test="memberNum!=null">-->
+            <!--and member_num = #{memberNum,jdbcType=VARCHAR}-->
+        <!--</if>-->
+    </select>
+
+
+
+    <!-- 查询报修列表 -->
+    <select id="selectDollRepairsList" resultType="com.bfei.icrane.core.models.vo.DollRepairsAll">
+        select a.id id, a.user_id userId, a.doll_id dollId, a.repairs_reason repairsReason,
+        a.create_date createDate, a.modified_date modifyDate,
+        b.memberID memberID, b.name name,
+        c.name dollName, c.tbimg_real_path tbimgRealPath, c.machine_code machineCode,
+        c.machine_status machineStatus,
+        d.province province,d.city city,d.county county,d.street street
+        from doll_repairs a LEFT JOIN t_member b on a.user_id=b.id
+        LEFT JOIN t_doll c on a.doll_id=c.id LEFT JOIN doll_address d on c.doll_address_id=d.id
+        where 1=1
+        <!--<if test="memberNum!=null">-->
+            <!--and a.member_num = #{memberNum,jdbcType=VARCHAR}-->
+        <!--</if>-->
+        order by a.id desc
+        limit #{begin},#{pageSize}
+    </select>
+
+
+
+    <!-- 插入 -->
+    <insert id="insert" parameterType="DollRepairs">
+        insert into doll_repairs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="dollId != null">
+                doll_id,
+            </if>
+            <if test="repairsSeason != null">
+                repairs_season,
+            </if>
+            <if test="creatDate != null">
+                creat_date,
+            </if>
+
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="dollId != null">
+                #{dollId,jdbcType=INTEGER},
+            </if>
+            <if test="repairsSeason != null">
+                #{repairsSeason,jdbcType=VARCHAR},
+            </if>
+
+            <if test="creatDate != null">
+                #{creatDate,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+
+        </trim>
+    </insert>
+</mapper>

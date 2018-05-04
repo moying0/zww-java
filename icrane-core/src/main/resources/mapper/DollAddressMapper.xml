@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.DollAddressDao">
+	<resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.DollAddress" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="county" property="county" jdbcType="VARCHAR" />
+    <result column="street" property="street" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="modified_date" property="modifiedDate" jdbcType="TIMESTAMP" />
+    <result column="default_flg" property="defaultFlg" jdbcType="BIT" />
+  	</resultMap>
+  	
+  	<sql id="Base_Column_List" >
+	    id, province, city, county, street, created_date,
+	    modified_date, default_flg
+  	</sql>
+	<insert id="insertSelective" parameterType="DollAddress">
+		insert into doll_address
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="province != null" >
+	        province,
+	      </if>
+	      <if test="city != null" >
+	        city,
+	      </if>
+	      <if test="county != null" >
+	        county,
+	      </if>
+	      <if test="street != null" >
+	        street,
+	      </if>
+	      <if test="createdDate != null" >
+	        created_date,
+	      </if> 
+	      <if test="modifiedDate != null" >
+	        modified_date,
+	      </if>
+	      <if test="defaultFlg != null" >
+	        default_flg,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id,jdbcType=INTEGER},
+	      </if>
+	      <if test="province != null" >
+	        #{province,jdbcType=VARCHAR},
+	      </if>
+	      <if test="city != null" >
+	        #{city,jdbcType=VARCHAR},
+	      </if>
+	      <if test="county != null" >
+	        #{county,jdbcType=VARCHAR},
+	      </if>
+	      <if test="street != null" >
+	        #{street,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createdDate != null" >
+	        #{createdDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="modifiedDate != null" >
+	        #{modifiedDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="defaultFlg != null" >
+	        #{defaultFlg,jdbcType=BIT},
+	      </if>
+	    </trim>
+	</insert>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	    delete from doll_address
+	    where id = #{id,jdbcType=INTEGER}
+  	</delete>
+
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+   		 select 
+    	<include refid="Base_Column_List" />
+	    from doll_address
+	    where id = #{id,jdbcType=INTEGER}
+  	</select>
+
+	<!--分页-->
+	<select id="getDollAddressList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		select
+		<include refid="Base_Column_List" />
+		from doll_address
+		order by id desc
+		limit #{begin},#{pageSize}
+	</select>
+
+	<select id="totalCount" resultType="java.lang.Integer" >
+		select
+		count(1)
+		from doll_address
+	</select>
+
+	<select id="selectDollAddress" resultMap="BaseResultMap" >
+		select
+		*
+		from doll_address
+	</select>
+
+  	<select id="findByMemberId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		SELECT 
+  		<include refid="Base_Column_List" />
+ 		FROM doll_address WHERE member_id=#{id}
+  	</select>
+
+  	<update id="updateDefaultAddr" parameterType="java.lang.Integer">
+  		update doll_address set default_flg=0 where member_id=#{memberId}
+  	</update>
+
+  	<update id="updateDafultAddrById" parameterType="java.lang.Integer">
+  		update doll_address set default_flg=1 where id=#{id}
+  	</update>
+
+	<update id="updateByPrimaryKeySelective" parameterType="DollAddress" >
+    update doll_address
+    <set >
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null" >
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        street = #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedDate != null" >
+        modified_date = #{modifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="defaultFlg != null" >
+        default_flg = #{defaultFlg,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="DollAddress" >
+    update doll_address
+    set
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      street = #{street,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      modified_date = #{modifiedDate,jdbcType=TIMESTAMP},
+      default_flg = #{defaultFlg,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

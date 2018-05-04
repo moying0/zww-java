@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.ChargeOrderDao">
+	
+	<resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.ChargeOrder" >
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+	    <result column="chargeruleid" property="chargeruleid" jdbcType="INTEGER" />
+	    <result column="charge_name" property="chargeName" jdbcType="VARCHAR" />
+	    <result column="price" property="price" jdbcType="DECIMAL" />
+	    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+	    <result column="member_name" property="memberName" jdbcType="VARCHAR" />
+	    <result column="charge_type" property="chargeType" jdbcType="INTEGER" />
+	    <result column="charge_state" property="chargeState" jdbcType="INTEGER" />
+	    <result column="coins_before" property="coinsBefore" jdbcType="INTEGER" />
+	    <result column="coins_after" property="coinsAfter" jdbcType="INTEGER" />
+	    <result column="coins_charge" property="coinsCharge" jdbcType="INTEGER" />
+	    <result column="coins_offer" property="coinsOffer" jdbcType="INTEGER" />
+	    <result column="superTicket_before" property="superTicketBefore" jdbcType="INTEGER" />
+	    <result column="superTicket_after" property="superTicketAfter" jdbcType="INTEGER" />
+	    <result column="superTicket_charge" property="superTicketCharge" jdbcType="INTEGER" />
+	    <result column="superTicket_offer" property="superTicketOffer" jdbcType="INTEGER" />
+	    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+	<sql id="Base_Column_List" >
+    id,order_no,chargeruleid,charge_name,price,member_id,member_name,charge_type,charge_state,coins_before,coins_after,coins_charge,coins_offer,superTicket_before,superTicket_after,superTicket_charge,superTicket_offer,create_date,update_date
+  	</sql>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from charge_order
+    where id = #{id,jdbcType=INTEGER}
+  	</select>
+  	
+  	<select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    *
+    from charge_order
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  	</select>
+	
+	<select id="getChargeOrder" resultType="ChargeOrder" >
+		<!-- 具体的sql -->
+		SELECT    
+		 <include refid="Base_Column_List" />
+		from charge_order order by create_date desc
+	</select>
+	
+	<update id="orderSuccess" >
+    update charge_order 
+    	<set>
+    	<if test="orderNo != null" >
+    		charge_state = 1,
+    	 </if> 
+       <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>  
+      </set>
+   	    where order_no = #{orderNo,jdbcType=VARCHAR} and charge_state = 0
+    </update>
+	
+	  <insert id="insertSelective" parameterType="ChargeOrder" >
+    insert into charge_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="chargeruleid != null" >
+        chargeruleid,
+      </if>
+      <if test="chargeName != null" >
+        charge_name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="memberName != null" >
+        member_name,
+      </if>
+      <if test="chargeType != null" >
+         charge_type,
+      </if>
+      <if test="chargeState != null" >
+        charge_state,
+      </if>
+      <if test="coinsBefore != null" >
+        coins_before,
+      </if>
+      <if test="coinsAfter != null" >
+        coins_after,
+      </if>
+      <if test="coinsCharge != null" >
+        coins_charge,
+      </if>
+       <if test="coinsOffer != null" >
+        coins_offer,
+      </if>
+      <if test="superTicketBefore != null" >
+        superTicket_before,
+      </if>
+      <if test="superTicketAfter != null" >
+        superTicket_after,
+      </if>
+      <if test="superTicketCharge != null" >
+        superTicket_charge,
+      </if>
+       <if test="superTicketOffer != null" >
+        superTicket_offer,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+       <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeruleid != null" >
+        #{chargeruleid,jdbcType=INTEGER},
+      </if>
+      <if test="chargeName != null" >
+        #{chargeName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        #{chargeType,jdbcType=INTEGER},
+      </if>
+      <if test="chargeState != null" >
+        #{chargeState,jdbcType=INTEGER},
+      </if>
+      <if test="coinsBefore != null" >
+        #{coinsBefore,jdbcType=INTEGER},
+      </if>
+       <if test="coinsAfter != null" >
+        #{coinsAfter,jdbcType=INTEGER},
+      </if>
+       <if test="coinsCharge != null" >
+        #{coinsCharge,jdbcType=INTEGER},
+      </if>
+       <if test="coinsOffer != null" >
+        #{coinsOffer,jdbcType=INTEGER},
+      </if>
+      <if test="superTicketBefore != null" >
+        #{superTicketBefore,jdbcType=INTEGER},
+      </if>
+       <if test="superTicketAfter != null" >
+        #{superTicketAfter,jdbcType=INTEGER},
+      </if>
+       <if test="superTicketCharge != null" >
+        #{superTicketCharge,jdbcType=INTEGER},
+      </if>
+       <if test="superTicketOffer != null" >
+        #{superTicketOffer,jdbcType=INTEGER},
+      </if>
+       <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+       <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <delete id="orderFailure" >
+     update charge_order 	
+     <set>
+    	<if test="orderNo != null" >
+    		charge_state = 1,
+    	 </if> 
+       <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>  
+      </set>
+    where order_no = #{orderNo,jdbcType=VARCHAR} and charge_state = 0
+  </delete>
+
+    <select id="selectChargeOrderList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from charge_order
+        order by id desc
+        limit #{begin},#{pageSize}
+    </select>
+
+    <select id="totalCount" resultType="java.lang.Integer">
+        select
+        count(1)
+        from charge_order
+    </select>
+    <select id="totalCount1" resultType="java.lang.Integer">
+        select
+        count(*)
+        from charge_order
+        WHERE 1=1
+        <if test="name != null">
+            AND member_name like concat('%',#{name},'%')
+        </if>
+        <if test="member_id != null">
+            AND member_id = #{member_id}
+        </if>
+        <if test="chargerelueid != null">
+            AND chargeruleid = #{chargerelueid}
+        </if>
+        <if test="state != null">
+            AND charge_state = #{state}
+        </if>
+        <if test="startTime != null">
+            AND  DATEDIFF(create_date,#{startTime}) &gt;= 0
+        </if>
+        <if test="endTime != null">
+            AND  DATEDIFF(create_date,#{endTime})&lt;0
+        </if>
+    </select>
+
+
+    <select id="selectChargeOrderBy" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from charge_order
+        WHERE 1=1
+        <if test="name != null">
+          AND member_name like concat
+            ('%',#{name},'%')
+        </if>
+        <if test="member_id != null">
+            AND member_id = #{member_id}
+        </if>
+        <if test="chargerelueid != null">
+            AND chargeruleid = #{chargerelueid}
+        </if>
+        <if test="state != null">
+            AND charge_state = #{state}
+        </if>
+        <if test="startTime != null">
+            AND  DATEDIFF(create_date,#{startTime}) &gt;= 0
+        </if>
+        <if test="endTime != null">
+            AND  DATEDIFF(create_date,#{endTime})&lt;0
+        </if>
+        order by id desc
+        limit #{begin},#{pageSize}
+    </select>
+
+
+    <select id="totalCountUserid" resultType="java.lang.Integer">
+        select
+        count(*)
+        from charge_order
+        WHERE 1=1 and charge_state = 1
+        <if test="member_id != null">
+            AND member_id = #{member_id}
+        </if>
+    </select>
+
+    <select id="totalPriceUserid" resultType="java.lang.Double">
+        select
+        sum(price)
+        from charge_order
+        WHERE 1=1 and charge_state = 1
+        <if test="member_id != null">
+            AND member_id = #{member_id}
+        </if>
+    </select>
+
+    <select id="selectChargeOrderByUserid" resultMap="BaseResultMap">
+        select
+        *
+        from charge_order
+        WHERE 1=1 and charge_state = 1
+        <if test="member_id != null">
+            AND member_id = #{member_id}
+        </if>
+        order by id desc
+        limit #{begin},#{pageSize}
+    </select>
+
+
+    <!--渠道充值记录-->
+    <select id="selectChannelChargeOrderBy" resultType="ChannelChargeOrder">
+        select
+        a.id id, a.order_no orderNo, a.chargeruleid chargeruleid,a.charge_name chargeName,
+        a.price price, a.member_id memberId, a.member_name memberName, a.charge_type chargeType,
+        a.charge_state chargeState, a.coins_before coinsBefore, a.coins_after coinsAfter,
+        a.coins_charge coinsCharge, a.coins_offer coinsOffer,a.create_date createDate, a.update_date updateDate,
+        b.register_channel registerChannel, b.login_channel loginChannel, b.memberID memberNum,b.last_login_from lastLoginFrom
+        from charge_order a LEFT JOIN t_member b on a.member_id = b.id
+        WHERE 1=1
+        <if test="registerChannel != null">
+            AND b.register_channel = #{registerChannel}
+        </if>
+        <if test="name != null">
+            AND a.member_name like concat
+            ('%',#{name},'%')
+        </if>
+        <if test="member_id != null">
+            AND b.memberID = #{member_id}
+        </if>
+        <if test="chargerelueid != null">
+            AND a.chargeruleid = #{chargerelueid}
+        </if>
+        <if test="state != null">
+            AND a.charge_state = #{state}
+        </if>
+        <if test="startTime != null">
+            AND  DATEDIFF(a.create_date,#{startTime}) &gt;= 0
+        </if>
+        <if test="endTime != null">
+            AND  DATEDIFF(a.create_date,#{endTime})&lt;0
+        </if>
+        <if test="lastLoginFrom != null">
+            <if test="lastLoginFrom == 'android'">
+                AND b.last_login_from = #{lastLoginFrom}
+            </if>
+            <if test="lastLoginFrom == 'ios'">
+                AND b.last_login_from is NULL
+                or b.last_login_from = 'iOS'
+            </if>
+        </if>
+        order by id desc
+        limit #{begin},#{pageSize}
+    </select>
+
+    <select id="totalCountChannel" resultType="java.lang.Integer">
+        select
+        count(*)
+        from charge_order a LEFT JOIN t_member b on a.member_id = b.id
+        WHERE 1=1
+        <if test="registerChannel != null">
+            AND b.register_channel = #{registerChannel}
+        </if>
+        <if test="name != null">
+            AND a.member_name like concat('%',#{name},'%')
+        </if>
+        <if test="member_id != null">
+            AND b.memberID = #{member_id}
+        </if>
+        <if test="chargerelueid != null">
+            AND a.chargeruleid = #{chargerelueid}
+        </if>
+        <if test="state != null">
+            AND a.charge_state = #{state}
+        </if>
+        <if test="startTime != null">
+            AND  DATEDIFF(a.create_date,#{startTime}) &gt;= 0
+        </if>
+        <if test="endTime != null">
+            AND  DATEDIFF(a.create_date,#{endTime})&lt;0
+        </if>
+        <if test="lastLoginFrom != null">
+            <if test="lastLoginFrom == 'android'">
+                AND b.last_login_from = #{lastLoginFrom}
+            </if>
+            <if test="lastLoginFrom == 'ios'">
+                AND b.last_login_from is NULL
+                or b.last_login_from = 'iOS'
+            </if>
+        </if>
+    </select>
+
+    <!--充值人数-->
+    <select id="selectChannelChargeNum" resultType="java.lang.Integer">
+        select
+        count(DISTINCT b.id)
+        from charge_order a LEFT JOIN t_member b on a.member_id = b.id
+        WHERE 1=1
+        <if test="registerChannel != null">
+            AND b.register_channel = #{registerChannel}
+        </if>
+        <if test="name != null">
+            AND a.member_name like concat('%',#{name},'%')
+        </if>
+        <if test="member_id != null">
+            AND b.memberID = #{member_id}
+        </if>
+        <if test="chargerelueid != null">
+            AND a.chargeruleid = #{chargerelueid}
+        </if>
+        <if test="state != null">
+            AND a.charge_state = #{state}
+        </if>
+        <if test="startTime != null">
+            AND  DATEDIFF(a.create_date,#{startTime}) &gt;= 0
+        </if>
+        <if test="endTime != null">
+            AND  DATEDIFF(a.create_date,#{endTime})&lt;0
+        </if>
+        <if test="lastLoginFrom != null">
+            <if test="lastLoginFrom == 'android'">
+                AND b.last_login_from = #{lastLoginFrom}
+            </if>
+            <if test="lastLoginFrom == 'ios'">
+                AND b.last_login_from is NULL
+                or b.last_login_from = 'iOS'
+            </if>
+        </if>
+    </select>
+
+    <!--充值金额-->
+    <select id="selectChannelChargePrice" resultType="java.lang.Double">
+        select
+        sum(a.price)
+        from charge_order a LEFT JOIN t_member b on a.member_id = b.id
+        WHERE 1=1
+        <if test="registerChannel != null">
+            AND b.register_channel = #{registerChannel}
+        </if>
+        <if test="name != null">
+            AND a.member_name like concat('%',#{name},'%')
+        </if>
+        <if test="member_id != null">
+            AND b.memberID = #{member_id}
+        </if>
+        <if test="chargerelueid != null">
+            AND a.chargeruleid = #{chargerelueid}
+        </if>
+        <if test="state != null">
+            AND a.charge_state = #{state}
+        </if>
+        <if test="startTime != null">
+            AND  DATEDIFF(a.create_date,#{startTime}) &gt;= 0
+        </if>
+        <if test="endTime != null">
+            AND  DATEDIFF(a.create_date,#{endTime})&lt;0
+        </if>
+        <if test="lastLoginFrom != null">
+            <if test="lastLoginFrom == 'android'">
+                AND b.last_login_from = #{lastLoginFrom}
+            </if>
+            <if test="lastLoginFrom == 'ios'">
+                AND b.last_login_from is NULL
+                OR  b.last_login_from = 'iOS'
+            </if>
+        </if>
+    </select>
+    <select id="selectmemberIdByOrder_no" resultType="java.lang.Integer">
+        SELECT member_id
+        FROM
+        charge_order
+        WHERE
+        order_no=#{out_trade_no}
+    </select>
+</mapper>

@@ -1,0 +1,87 @@
+@charset "utf-8";
+/* 你自己的样式 */
+
+/* 二级页面，结构重写 */
+/*
+	1、发布广告
+	2、发布通知
+	3、发优惠券
+	4、商品管理
+	5、权限管理
+	6、总店设置
+	7、分店设置
+*/
+.page-container{
+	width: 60%;
+}
+
+.every-part{
+	display: block;
+}
+.every-part>label {
+	display: inline-block;
+	width: 150px;
+	text-align: right;
+}
+/* 广告封面和广告摘要中 介绍文字 */
+.lzh-ad-text{
+	display: inline-block; 
+	padding-left: 14px; 
+	padding-top: 3px; 
+	padding-bottom: 4px;
+}
+/* 图片框 *//* 广告摘要--做标题 */
+#preview{
+	margin-left: 164px;
+	padding: 0;
+	/* width:750px;
+	height:260px; */
+	/* border:1px solid #000; */
+	overflow:hidden;
+}
+#imghead {
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
+	border: 1px solid #adadad;
+}  
+.lzh-ad-title{
+	margin-left: 164px;
+	padding: 0;
+}
+/* 图片框下面选择按钮 */
+.lzh-ad-search-img-btn{
+	margin-left: 164px;
+	margin-top: 4px;
+	padding: 0;
+}
+/* 页面内提交按钮 */
+.lzh-ad-btn-submint{
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	margin-top: 3em;
+}
+/* select选择框 */
+.input-text.select{
+	width: 270px;
+}
+/* textarea禁止拉动 */
+textarea{
+	resize: none;
+}
+/*
+	3、发优惠券--》发放总数
+*/
+.lzh-coupon-count{
+	width: 300px;
+}
+/*
+	5、权限管理--》权限分配
+*/
+.lzh-checkbox-space{
+	display: inline-block;
+	margin-right: 8px;
+}
+
+
+
+

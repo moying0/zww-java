@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.MemberChargeHistoryDao">
+
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.MemberChargeHistory" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="member_id" property="memberId" jdbcType="INTEGER" />
+        <result column="prepaid_amt" property="prepaidAmt" jdbcType="DECIMAL" />
+        <result column="coins" property="coins" jdbcType="INTEGER" />
+        <result column="charge_date" property="chargeDate" jdbcType="TIMESTAMP" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="charge_method" property="chargeMethod" jdbcType="VARCHAR" />
+        <result column="doll_id" property="dollId" jdbcType="INTEGER" />
+        <result column="coins_before" property="coinsBefore" jdbcType="INTEGER" />
+        <result column="coins_after" property="coinsAfter" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id,member_id,prepaid_amt,coins,charge_date,type,charge_method,doll_id,coins_before,coins_after
+    </sql>
+
+    <select id="selectChargeOrderList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_member_charge_history
+        WHERE 1=1
+        <if test="userId != null">
+           AND member_id = #{userId,jdbcType=INTEGER}
+        </if>
+        order by id desc
+        limit #{begin},#{pageSize}
+    </select>
+
+    <select id="totalCount" resultType="java.lang.Integer">
+        select
+        count(1)
+        from t_member_charge_history
+        WHERE 1=1
+        <if test="userId != null">
+            AND member_id = #{userId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+</mapper>

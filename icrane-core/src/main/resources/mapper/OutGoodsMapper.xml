@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.OutGoodsListDao">
+
+
+    <select id="dollOrderTotalCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM t_doll_order a
+        LEFT JOIN t_member_addr c ON a.address_id=c.id
+        WHERE a.status='已发货'
+        <if test="phone!=null">
+            and c.receiver_phone like concat
+            ('%',#{phone},'%')
+        </if>
+        <if test="outGoodsId!=0">
+            and a.id=#{outGoodsId}
+        </if>
+    </select>
+
+    <!-- 查询已发货发货的订单 -->
+    <select id="getOutOrdersByStatus" resultType="com.bfei.icrane.core.models.vo.OutGoods">
+        select DISTINCT a.id id, a.order_number orderNumber, a.deliver_method deliverMethod,
+        a.deliver_number deliverNumber, a.deliver_date deliverDate,
+        c.receiver_phone addrPhone, c.receiver_name addrName,
+        b.province addrProvince, b.city addrCity, b.county addrCounty, b.street street,
+        c.province addrProvince1, c.city addrCity1, c.county addrCounty1, c.street street1
+        from t_doll_order a
+        LEFT JOIN t_member_addr b on a.order_by=b.member_id AND b.default_flg=1
+        LEFT JOIN t_member_addr c on a.address_id=c.id
+        where a.status='已发货'
+        <if test="phone!=null">
+            and b.receiver_phone like concat
+            ('%',#{phone},'%')
+        </if>
+        <if test="outGoodsId!=0">
+            and a.id=#{outGoodsId}
+        </if>
+        order by a.modified_date desc
+        limit #{begin},#{pageSize}
+    </select>
+
+
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        from t_doll_order a
+        LEFT JOIN t_member_addr c on a.address_id=c.id
+        LEFT JOIN t_member d on a.order_by = d.id
+        where a.status='申请发货'
+        <if test="phone!=null">
+            and c.receiver_phone like concat
+            ('%',#{phone},'%')
+        </if>
+        <if test="memberId!=null">
+            and d.memberID = #{memberId}
+        </if>
+    </select>
+
+
+    <!-- 查询待发货发货的订单 -->
+    <select id="getOrdersByStatus" resultType="com.bfei.icrane.core.models.vo.OutGoods">
+        select DISTINCT a.id id, a.order_number orderNumber, a.deliver_method deliverMethod,
+        a.deliver_number deliverNumber, a.deliver_date deliverDate, a.modified_date modifiedDate,
+        c.receiver_phone addrPhone, c.receiver_name addrName,
+        b.province addrProvince, b.city addrCity, b.county addrCounty, b.street street,
+        c.province addrProvince1, c.city addrCity1, c.county addrCounty1, c.street street1,
+        d.memberId
+        from t_doll_order a
+        LEFT JOIN t_member_addr b on a.order_by=b.member_id AND b.default_flg=1
+        LEFT JOIN t_member_addr c on a.address_id=c.id
+        LEFT JOIN t_member d on a.order_by = d.id
+        where a.status='申请发货'
+        <if test="phone!=null">
+            and c.receiver_phone like concat
+            ('%',#{phone},'%')
+        </if>
+        <if test="memberId!=null">
+            and d.memberID = #{memberId}
+        </if>
+        order by a.modified_date desc
+        limit #{begin},#{pageSize}
+    </select>
+
+</mapper>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.VipDao">
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.Vip">
+        <id column="id" property="id"/>
+        <result column="level" property="level"/>
+        <result column="name" property="name"/>
+        <result column="least_allowed" property="leastAllowed"/>
+        <result column="exemption_postage_number" property="exemptionPostageNumber"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="check_time" property="checkTime"/>
+        <result column="flash_appeal" property="flashAppeal"/>
+        <result column="discount" property="discount"/>
+    </resultMap>
+    <update id="lowerLevel">
+        UPDATE account
+        SET growth_value = (
+        SELECT
+        a.least_allowed
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        member_vip
+        WHERE
+        `level` = IFNULL(
+        (
+        SELECT
+        `level`
+        FROM
+        member_vip
+        WHERE
+        least_allowed <![CDATA[<=]]> (
+        SELECT
+        growth_value
+        FROM
+        account
+        WHERE
+        id = #{id}
+        )
+        ORDER BY
+        `level` DESC
+        LIMIT 1
+        ) - 1,
+        0
+        )
+        ) a
+        )
+        WHERE
+        id = #{id};
+    </update>
+    <select id="selectVipByGrowthValue" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            member_vip
+        WHERE
+            least_allowed <![CDATA[<=]]> #{growthValue}
+        ORDER BY
+            `level` DESC
+        LIMIT 1;
+    </select>
+    <select id="selectVipByMemberId" resultType="com.bfei.icrane.core.models.Vip">
+        SELECT
+            *
+        FROM
+            member_vip
+        WHERE
+            least_allowed <![CDATA[<=]]> (
+            SELECT
+                IFNULL(growth_value, 0)
+            FROM
+                account
+            WHERE
+                id = #{memberId}
+        )
+        ORDER BY
+            `level` DESC
+        LIMIT 1;
+    </select>
+    <select id="getAll" resultType="com.bfei.icrane.core.models.Vip">
+        SELECT
+            *
+        FROM
+            member_vip
+        ORDER BY
+            `level`
+    </select>
+    <select id="selectVipByLevel" resultType="com.bfei.icrane.core.models.Vip">
+        SELECT
+            *
+        FROM
+            member_vip
+        WHERE
+            `level` = #{level}
+    </select>
+    <select id="getNext" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            member_vip
+        WHERE
+            least_allowed > (
+                SELECT
+                    growth_value
+                FROM
+                    account
+                WHERE
+                    id = #{memberId}
+            )
+        ORDER BY
+            `level`
+        LIMIT 1
+    </select>
+    <select id="getMax" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            member_vip
+        ORDER BY
+            `level` DESC
+        LIMIT 1
+    </select>
+</mapper>
+
+

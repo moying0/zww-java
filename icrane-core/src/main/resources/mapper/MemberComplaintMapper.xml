@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.MemberComplaintDao">
+
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.MemberComplaint">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="game_num" property="gameNum" jdbcType="VARCHAR"/>
+        <result column="member_id" property="memberId" jdbcType="INTEGER"/>
+        <result column="member_num" property="memberNum" jdbcType="VARCHAR"/>
+        <result column="doll_id" property="dollId" jdbcType="INTEGER"/>
+        <result column="member_catch_id" property="memberCatchId" jdbcType="INTEGER"/>
+        <result column="complaint_reason" property="complaintReason" jdbcType="VARCHAR"/>
+        <result column="check_state" property="checkState" jdbcType="INTEGER"/>
+        <result column="check_reason" property="checkReason" jdbcType="VARCHAR"/>
+        <result column="creat_date" property="creatDate" jdbcType="TIMESTAMP"/>
+        <result column="creat_by" property="creatBy" jdbcType="INTEGER"/>
+        <result column="modify_date" property="modifyDate"
+                jdbcType="TIMESTAMP"/>
+        <result column="modify_by" property="modifyBy" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, game_num,member_id,member_num,doll_id,member_catch_id,
+        complaint_reason,check_state,check_reason,
+        creat_date,creat_by,modify_date,modify_by
+    </sql>
+
+    <!--查询待处理总条数-->
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM member_complaint
+        WHERE 1=1 AND check_state = 0
+        <if test="memberNum!=null">
+            and member_num = #{memberNum,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!--查询待处理总条数-->
+    <select id="totalDoneCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM member_complaint
+        WHERE 1=1 AND check_state != 0
+        <if test="memberNum!=null">
+            and member_num = #{memberNum,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 查询未处理申诉列表 -->
+    <select id="getMemberComplaintList" resultType="com.bfei.icrane.core.models.vo.MemberComplaintAll">
+        select a.id id, a.game_num gameNum,a.member_id memberId, a.member_num memberNum,a.doll_id dollId,
+        a.member_catch_id memberCatchId, a.complaint_reason complaintReason,a.check_state checkState,a.check_reason
+        checkReason,
+        a.creat_date creatDate,a.modify_date modifyDate,
+        b.name memberName, b.mobile memberPhone,
+        c.tbimg_real_path dollImg, c.name dollName,c.price dollCions,
+        d.catch_date memberCatchDate, d.catch_status memberCatchResult,d.video_url videoURL
+        from member_complaint a LEFT JOIN t_member b on a.member_id=b.id
+        LEFT JOIN t_doll c on a.doll_id=c.id LEFT JOIN t_doll_catch_history d on a.member_catch_id=d.id
+        where 1=1 AND a.check_state = 0
+        <if test="memberNum!=null">
+            and a.member_num = #{memberNum,jdbcType=VARCHAR}
+        </if>
+        order by a.id desc
+        limit #{begin},#{pageSize}
+    </select>
+
+    <!-- 查询已处理申诉列表 -->
+    <select id="getDoneMemberComplaintList" resultType="com.bfei.icrane.core.models.vo.MemberComplaintAll">
+        select a.id id, a.game_num gameNum,a.member_id memberId, a.member_num memberNum,a.doll_id dollId,
+        a.member_catch_id memberCatchId, a.complaint_reason complaintReason,a.check_state checkState,a.check_reason
+        checkReason,
+        a.creat_date creatDate,a.modify_date modifyDate,
+        b.name memberName, b.mobile memberPhone,
+        c.tbimg_real_path dollImg, c.name dollName,c.price dollCions,
+        d.catch_date memberCatchDate, d.catch_status memberCatchResult
+        from member_complaint a LEFT JOIN t_member b on a.member_id=b.id
+        LEFT JOIN t_doll c on a.doll_id=c.id LEFT JOIN t_doll_catch_history d on a.member_catch_id=d.id
+        where 1=1 AND a.check_state != 0
+        <if test="memberNum!=null">
+            and a.member_num = #{memberNum,jdbcType=VARCHAR}
+        </if>
+        order by a.modify_date desc
+        limit #{begin},#{pageSize}
+    </select>
+
+    <!--申诉处理-->
+    <update id="updateComplaintResult" parameterType="com.bfei.icrane.core.models.MemberComplaint">
+        update member_complaint
+        <set>
+            <if test="checkState != null">
+                check_state = #{checkState,jdbcType=INTEGER},
+            </if>
+            <if test="checkReason != null">
+                check_reason = #{checkReason,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyTime != null">
+                modify_date = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--通过id查询申诉列表-->
+    <select id="selectByPrimaryKey" resultType="com.bfei.icrane.core.models.vo.MemberComplaintAll"
+            parameterType="java.lang.Integer">
+        select a.id id, a.game_num gameNum,a.member_id memberId, a.member_num memberNum,a.doll_id dollId,
+        a.member_catch_id memberCatchId, a.complaint_reason complaintReason,a.check_state checkState,a.check_reason
+        checkReason,
+        a.creat_date creatDate,a.modify_date modifyDate,
+        b.name memberName, b.mobile memberPhone,
+        c.tbimg_real_path dollImg, c.name dollName,c.price dollCions,
+        d.catch_date memberCatchDate, d.catch_status memberCatchResult
+        from member_complaint a LEFT JOIN t_member b on a.member_id=b.id
+        LEFT JOIN t_doll c on a.doll_id=c.id LEFT JOIN t_doll_catch_history d on a.member_catch_id=d.id
+        where 1=1
+        <if test="id != null">
+            and a.id = #{id,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="selectMemberComplaintByHistoryId" resultType="java.lang.Integer">
+        SELECT
+            COUNT(id)
+        FROM
+            member_complaint
+        WHERE
+            member_catch_id = #{historyId}
+    </select>
+
+    <!-- 插入 -->
+    <insert id="insert" parameterType="MemberComplaint">
+        insert into member_complaint
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gameNum != null">
+                game_num,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="memberNum != null">
+                member_num,
+            </if>
+            <if test="dollId != null">
+                doll_id,
+            </if>
+            <if test="memberCatchId != null">
+                member_catch_id,
+            </if>
+            <if test="complaintReason != null">
+                complaint_reason,
+            </if>
+            <if test="checkState != null">
+                check_state,
+            </if>
+            <if test="creatDate != null">
+                creat_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gameNum != null">
+                #{gameNum,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="memberNum != null">
+                #{memberNum,jdbcType=VARCHAR},
+            </if>
+            <if test="dollId != null">
+                #{dollId,jdbcType=INTEGER},
+            </if>
+            <if test="memberCatchId != null">
+                #{memberCatchId,jdbcType=INTEGER},
+            </if>
+            <if test="complaintReason != null">
+                #{complaintReason,jdbcType=VARCHAR},
+            </if>
+            <if test="checkState != null">
+                #{checkState,jdbcType=INTEGER},
+            </if>
+            <if test="creatDate != null">
+                #{creatDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.MachineProbabilityDao">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.MachineProbability">
+		<id column="id" property="id" />
+		<result column="probability_rules_id" property="probabilityRulesId" />
+		<result column="doll_id" property="dollId" />
+		<result column="probability_1" property="probability1" />
+		<result column="probability_2" property="probability2" />
+		<result column="probability_3" property="probability3" />
+		<result column="base_num" property="baseNum" />
+		<result column="created_date" property="createdDate" />
+		<result column="modified_date" property="modifiedDate" />
+		<result column="created_by" property="createdBy" />
+		<result column="modified_by" property="modifiedBy" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, probability_rules_id , doll_id , probability_1 ,
+        probability_2 , probability_3 , base_num , created_date , modified_date , created_by  , modified_by 
+    </sql>
+
+    <select id="findByDollId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+        SELECT
+            <include refid="Base_Column_List" />
+        FROM
+           machine_probability
+        WHERE
+            doll_id = #{dollId,jdbcType=INTEGER} limit 1
+    </select>
+    
+    <select id="findMemberCharge" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    	SELECT IFNULL(sum(price),0) charge from charge_order where member_id=#{userId,jdbcType=INTEGER} and charge_state=1
+    </select>
+
+</mapper>

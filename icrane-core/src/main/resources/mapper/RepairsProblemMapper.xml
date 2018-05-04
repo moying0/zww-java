@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.RepairsProblemDao">
+    <resultMap id="BaseResultMap" type="RepairsProblem">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="problem" property="problem" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    	id, problem
+  	</sql>
+    <select id="queryList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from doll_repairs_problem
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+		SELECT   COUNT(*)   FROM doll_repairs_problem
+	</select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT * FROM doll_repairs_problem WHERE id=#{id, jdbcType=INTEGER}
+	</select>
+    <insert id="insertService" parameterType="RepairsProblem">
+        insert into doll_repairs_problem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="problem != null">
+                problem,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="problem != null">
+                #{problem,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertRepairs">
+		INSERT INTO doll_repairs
+		VALUE
+			(
+				NULL,
+				#{userId},
+				#{dollId},
+				#{repairsReason},
+				#{createDate},
+				#{modifyDate}
+			)
+	</insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="RepairsProblem">
+        update doll_repairs_problem
+        <set>
+            <if test="problem != null">
+                problem = #{problem,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from doll_repairs_problem
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>

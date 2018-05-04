@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.DollRoomNewItemDao">
+	<resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.DollRoomNewItem">
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="doll_room_id" jdbcType="INTEGER" property="dollRoomId" />
+		<result column="doll_id" jdbcType="INTEGER" property="dollId" />
+		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
+		<result column="modified_date" jdbcType="VARCHAR" property="modifiedDate" />
+		<result column="delete_flg" jdbcType="INTEGER" property="deleteFlg" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,doll_room_id,doll_id,
+		created_date,modified_date,delete_flg
+	</sql>
+
+	<!-- 查询房间列表 -->
+	<select id="selectDollRoomNewItemList" resultType="DollRoomNewItemAll">
+		select
+		a.id id, a.doll_room_id dollRoomId, a.doll_id dollId, a.created_date createdDate,
+		a.modified_date modifiedDate,
+		b.room_name dollRoomName,
+		c.name dollName
+		from doll_room_item a LEFT JOIN doll_room b on a.doll_room_id=b.id
+		LEFT JOIN t_doll c on a.doll_id = c.id
+		WHERE 1=1 and a.delete_flg = 1
+		<if test="dollRoomId != null">
+			AND a.doll_room_id = #{dollRoomId}
+		</if>
+		<if test="dollRoomName != null">
+			AND b.room_name like concat
+			('%',#{dollRoomName},'%')
+		</if>
+		order by id desc
+		limit #{begin},#{pageSize}
+	</select>
+
+	<select id="totalCount" resultType="java.lang.Integer">
+		select
+		count(*)
+		from doll_room_item a LEFT JOIN doll_room b on a.doll_room_id=b.id
+		LEFT JOIN t_doll c on a.doll_id = c.id
+		WHERE 1=1
+		<if test="dollRoomId != null">
+			AND a.doll_room_id = #{dollRoomId}
+		</if>
+		<if test="dollRoomName != null">
+			AND b.room_name like concat
+			('%',#{dollRoomName},'%')
+		</if>
+	</select>
+
+	<!--通过id查询-->
+	<select id="getDollRoomNewItemById" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from doll_room_item
+		WHERE id = #{id}
+	</select>
+
+
+	<!--添加-->
+	<insert id="insertDollRoomNewItem" parameterType="DollRoomNewItem">
+		INSERT INTO
+		doll_room_item(doll_room_id,doll_id,created_date)
+		VALUES(#{dollRoomId},#{dollId},#{createdDate})
+	</insert>
+
+
+	<!--删除-->
+	<update id="deleteDollRoomNewItem" parameterType="java.lang.Integer">
+		update
+		doll_room_item
+		set delete_flg = 0
+		WHERE id = #{id}
+	</update>
+
+	<!--删除-->
+	<update id="deleteDollRoomNewItemByRoomId" parameterType="java.lang.Integer">
+		update
+		doll_room_item
+		set delete_flg = 0
+		WHERE doll_room_id = #{dollRoomId}
+	</update>
+
+	<!--修改-->
+	<update id="updateDollRoomNewItem" parameterType="DollRoomNewItem">
+		update
+		doll_room_item
+		<set>
+			<if test="dollRoomId != null">
+				doll_room_id = #{dollRoomId,jdbcType=INTEGER},
+			</if>
+
+			<if test="dollId != null">
+				doll_id = #{dollId,jdbcType=INTEGER},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifiedDate != null">
+				modified_date = #{modifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleteFlg != null">
+				delete_flg = #{deleteFlg,jdbcType=INTEGER},
+			</if>
+		</set>
+		WHERE id = #{id, jdbcType=INTEGER}
+	</update>
+
+	<!--通过查询-->
+	<select id="selectDollByDollRoomItem" resultType="Doll" >
+		SELECT * FROM t_doll
+		WHERE id NOT IN
+		(SELECT doll_id FROM doll_room_item WHERE delete_flg=1)
+		AND delete_status=1
+		order by name desc
+	</select>
+
+</mapper>
+
+
+
+
+
+

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.DollRoomDao">
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.pojos.CatchDollPojo">
+        <id column="id" property="id"/>
+        <result column="catch_date" jdbcType="TIMESTAMP" property="catchDate"/>
+        <result column="video_url" jdbcType="VARCHAR" property="videoUrl"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="icon_context_path" jdbcType="VARCHAR" property="catchContextPath"/>
+        <result column="icon_file_name" jdbcType="VARCHAR" property="catchFileName"/>
+        <result column="icon_real_path" jdbcType="VARCHAR" property="iconRealPath"/>
+        <association property="vip" javaType="com.bfei.icrane.core.models.Vip"
+                     select="com.bfei.icrane.core.dao.VipDao.selectVipByMemberId" column="id">
+        </association>
+    </resultMap>
+    <!-- 在线人数 -->
+    <select id="getDollId" resultType="DollRoom">
+		SELECT doll_id as dollId FROM
+		`t_member_doll`
+		where member_id = #{memberId};
+	</select>
+
+    <insert id="insertDollRoom" parameterType="DollRoom">
+		INSERT INTO
+		t_member_doll(member_id,doll_id,playing_flg,created_date)
+		VALUES(#{memberId}, #{dollId},#{playingFlg},#{createdDate})
+	</insert>
+
+    <delete id="outDollRoom" parameterType="DollRoom">
+		DELETE FROM t_member_doll
+		WHERE member_id = #{memberId}
+	</delete>
+
+    <update id="clearPlayFlagByDollId" parameterType="java.lang.Integer">
+		update
+		t_member_doll
+		set playing_flg = false
+		WHERE doll_id = #{dollId}
+	</update>
+
+    <update id="setPlayFlag" parameterType="java.lang.Integer">
+		update t_member_doll
+		set
+		playing_flg = true
+		WHERE doll_id = #{dollId} AND member_id =
+		#{memberId}
+	</update>
+
+    <!-- 检查当前是否有楼主 -->
+    <select id="checkPlaying" parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `t_member_doll`
+		where doll_id =
+		#{dollId} AND playing_flg = true;
+	</select>
+
+    <select id="selectDollParticularsById" resultType="com.bfei.icrane.core.models.DollParticulars">
+		SELECT
+			id,
+			dollName NAME,
+			size,
+			type,
+			note
+		FROM
+			doll_info
+		WHERE
+			dollCode = (
+				SELECT
+					doll_ID
+				FROM
+					t_doll
+				WHERE
+					id = #{dollId}
+			);
+	</select>
+
+    <!-- 在线人数 -->
+    <select id="getDollRoomCount" resultType="DollRoom">
+		SELECT COUNT(*) as
+		dollRoomCount FROM `t_member_doll`
+		where doll_id = #{dollId};
+	</select>
+
+    <!-- 在线玩家头像 -->
+    <select id="getMemberHead" resultType="DollRoom">
+		SELECT icon_context_path
+		as onlineContextPath,icon_file_name as
+		onlineFileName
+		FROM
+		`t_member_doll` mdoll
+		LEFT JOIN `t_member` mber
+		ON(mdoll.`member_id`=mber.`id`)
+		where mdoll.doll_id = #{dollId}
+		LIMIT
+		#{offset}, #{limit}
+	</select>
+
+    <!-- 获取楼主信息 -->
+    <select id="getPlayMember" resultType="DollRoom">
+		SELECT icon_context_path
+		as playContextPath,icon_file_name as
+		playFileName,name as name
+		FROM
+		`t_member_doll` mdoll
+		LEFT JOIN `t_member` mber
+		ON(mdoll.`member_id`=mber.`id`)
+		WHERE 1=1 and mdoll.doll_id = #{dollId}
+		and mdoll.`playing_flg`=1
+	</select>
+
+    <select id="getDollImg" resultType="com.bfei.icrane.core.pojos.DollImgPojo">
+		SELECT img_context_path as
+		imgContextPath,img_file_name as imgFileName,
+		img_real_path as imgRealPath
+		FROM `t_doll_image`
+		WHERE
+		doll_id = #{dollId}
+	</select>
+
+    <select id="getCatchDoll" parameterType="com.bfei.icrane.core.pojos.CatchDollPojo"
+            resultMap="BaseResultMap">
+		SELECT
+		his.`catch_date`,
+		his.`video_url`,
+		mber.`name` ,
+		mber.`icon_context_path`,
+		mber.`icon_file_name`,
+		mber.`icon_real_path`,
+		mber.`memberID`,
+		mber.`id`
+		FROM `t_doll_catch_history` his
+		LEFT JOIN `t_member` mber
+		ON(his.`member_id` = mber.`id`)
+		WHERE
+		his.`doll_id`=#{dollId} and his.catch_status='抓取成功'
+		ORDER BY his.`catch_date` DESC LIMIT 10
+	</select>
+</mapper>
+
+
+
+
+
+

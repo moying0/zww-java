@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bfei.icrane.core.dao.DollImageDao" >
+	<resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.DollImage" >
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <!-- <result column="doll_id" property="dollId" jdbcType="INTEGER" /> -->
+	    <result column="img_context_path" property="imgContextPath" jdbcType="VARCHAR" />
+	    <result column="img_file_name" property="imgFileName" jdbcType="VARCHAR" />
+	    <result column="img_real_path" property="imgRealPath" jdbcType="VARCHAR" />
+	    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+	    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+	    <result column="modified_date" property="modifiedDate" jdbcType="TIMESTAMP" />
+	    <result column="modified_by" property="modifiedBy" jdbcType="INTEGER" />
+	    <association property="doll" javaType="Doll">
+	    	<id property="id" column="doll_id"/>
+	    	<result property="name" column="name" jdbcType="VARCHAR"/>
+	    </association>
+  	</resultMap>
+  	
+  	<select id="getImageList" resultMap="BaseResultMap" >
+  		select a.*,
+  		b.name
+  		from t_doll_image a,t_doll b
+  		where a.doll_id=b.id
+		<if test="name!=null">
+		and b.name like concat  
+    	('%',#{name},'%')
+		</if>
+		order by id desc
+		limit #{begin},#{pageSize}
+  	</select>
+  	
+  	<select id="totalCount" resultType="java.lang.Integer">
+		select
+		count(1)
+		from t_doll_image a,t_doll b
+		where a.doll_id=b.id
+		<if test="name!=null">
+		and b.name like concat  
+    	('%',#{name},'%')
+		</if>
+	</select>
+	<select id="getImageById" parameterType="int" resultType="DollImage">
+		select img_real_path
+		from t_doll_image
+		where id=#{id}
+	</select>
+	<insert id="insertSelective" parameterType="DollImage" >
+    insert into t_doll_image
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="doll.id != null" >
+        doll_id,
+      </if>
+      <if test="imgContextPath != null" >
+        img_context_path,
+      </if>
+      <if test="imgFileName != null" >
+        img_file_name,
+      </if>
+      <if test="imgRealPath != null" >
+        img_real_path,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="modifiedDate != null" >
+        modified_date,
+      </if>
+      <if test="modifiedBy != null" >
+        modified_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="doll.id != null" >
+        #{doll.id,jdbcType=INTEGER},
+      </if>
+      <if test="imgContextPath != null" >
+        #{imgContextPath,jdbcType=VARCHAR},
+      </if>
+      <if test="imgFileName != null" >
+        #{imgFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="imgRealPath != null" >
+        #{imgRealPath,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=INTEGER},
+      </if>
+      <if test="modifiedDate != null" >
+        #{modifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null" >
+        #{modifiedBy,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteById" parameterType="int">
+  	delete from t_doll_image
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <!--批量删除-->
+    <delete id="deleteAllById" parameterType="List">
+        delete from t_doll_image
+        where id IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+  <update id="updateImage" parameterType="DollImage">
+  	update t_doll_image
+  	set img_real_path=#{imgRealPath}
+  	where id=#{id}
+  </update>
+</mapper>

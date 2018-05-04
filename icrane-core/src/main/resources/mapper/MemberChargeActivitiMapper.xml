@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.MemberChargeActivitiDao">
+
+	<resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.MemberChargeActiviti" >
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+	    <result column="member_name" property="memberName" jdbcType="VARCHAR" />
+	     <result column="charge_type" property="chargeType" jdbcType="INTEGER" />
+	    <result column="charge_name" property="chargeName" jdbcType="VARCHAR" />
+	    <result column="charge_date_limit" property="chargeDateLimit" jdbcType="INTEGER" />
+	    <result column="charge_date_start" property="chargeDateStart" jdbcType="TIMESTAMP" />
+	    <result column="coins_standard" property="coinsStandard" jdbcType="INTEGER" />
+	    <result column="coins_take" property="coinsTake" jdbcType="INTEGER" />
+	    <result column="member_state" property="memberState" jdbcType="INTEGER" />
+		<result column="charge_date_end" property="chargeDateEnd" jdbcType="TIMESTAMP" />
+		<result column="charge_award" property="chargeAward" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+   `id`,`member_id`,`member_name`',`charge_type`,`charge_name`,`charge_date_limit`,`charge_date_start`,`coins_standard`,`coins_take`,`member_state`,`charge_date_end`,`charge_award`
+  	</sql>
+
+	<select id="selectMemberEffect" resultType="MemberChargeActiviti" >
+		<!-- 具体的sql -->
+		SELECT
+		 <include refid="Base_Column_List" />
+		from member_charge_activiti 
+		where member_id = #{memberId,jdbcType=INTEGER} and charge_type = #{chargeType,jdbcType=INTEGER} and member_state = 0  order by charge_date_start limit 1
+	</select>
+	
+ 	<insert id="insertChargeActiviti" parameterType="MemberChargeActiviti" >
+ 		insert into member_charge_activiti 
+ 		<trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="memberName != null" >
+        member_name,
+      </if>
+      <if test="chargeType != null" >
+        charge_type,
+      </if>
+      <if test="chargeName != null" >
+        charge_name,
+      </if>
+      <if test="chargeDateLimit != null" >
+        charge_date_limit,
+      </if>
+      <if test="chargeDateStart != null" >
+        charge_date_start,
+      </if>
+      <if test="coinsStandard != null" >
+        coins_standard,
+      </if>
+      <if test="coinsTake != null" >
+        coins_take,
+      </if>
+      <if test="memberState != null" >
+        member_state,
+      </if>
+      <if test="chargeDateEnd != null" >
+        charge_date_end,
+      </if>
+         <if test="chargeAward != null" >
+        charge_award,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        #{chargeType,jdbcType=INTEGER},
+      </if>
+      <if test="chargeName != null" >
+        #{chargeName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeDateLimit != null" >
+        #{chargeDateLimit,jdbcType=INTEGER},
+      </if>
+      <if test="chargeDateStart != null" >
+        #{chargeDateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coinsStandard != null" >
+        #{coinsStandard,jdbcType=INTEGER},
+      </if>
+      <if test="coinsTake != null" >
+        #{coinsTake,jdbcType=INTEGER},
+      </if>
+      <if test="memberState != null" >
+        #{memberState,jdbcType=INTEGER},
+      </if>
+        <if test="chargeDateEnd != null" >
+        #{chargeDateEnd,jdbcType=TIMESTAMP},
+      </if>
+        <if test="chargeAward != null" >
+        #{chargeAward,jdbcType=VARCHAR},
+      </if>
+    </trim>
+	</insert>
+</mapper>
+
+

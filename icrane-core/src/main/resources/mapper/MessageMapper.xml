@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.MessageDao">
+	<select id="getMessage" resultType="Message" parameterType="Message">
+		<!-- 具体的sql -->
+		SELECT 
+		msg.`id` as id,
+		msg.`msg_title` as msgTitle,
+		msg.`msg_body` as msgBody,
+		msg.`send_date` as sendDate,
+		msg.`read_flg` as readFlg
+		from`t_member_msg` msg 
+		WHERE msg.`member_id`=#{memberId}
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="getMessageDetail" resultType="Message" parameterType="Message">
+		<!-- 具体的sql -->
+		SELECT 
+		msg.`msg_title` as msgTitle,
+		msg.`msg_body` as msgBody,
+		msg.`send_date` as sendDate
+		from`t_member_msg` msg 
+		LEFT JOIN `t_member` mber ON(msg.`member_id`=mber.`id`)
+		WHERE msg.`id`=#{id}
+	</select>
+	
+	<!-- 更新登录时间 -->
+	<update id="updateMessageRead" parameterType="Message">
+		UPDATE t_member_msg
+		SET
+		read_flg = 1
+		WHERE
+		id = #{id}
+	</update>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	    delete from t_member_msg
+	    where id = #{id,jdbcType=INTEGER}
+  	</delete>
+  	
+  	<delete id="deleteReadMessage" parameterType="java.lang.Integer" >
+	    delete from t_member_msg
+	    where 1=1 and member_id = #{memberId,jdbcType=INTEGER}
+	    and read_flg =1
+  	</delete>
+</mapper>

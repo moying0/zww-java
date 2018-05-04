@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bfei.icrane.core.dao.TAppVersionDao">
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.TAppVersion">
+        <id column="app_key" property="appKey" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="VARCHAR"/>
+        <result column="upgrade_url" property="upgradeUrl" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="hide_flg" property="hideFlg" jdbcType="VARCHAR"/>
+        <result column="force_update" property="forceUpdate"/>
+        <result column="open_update" property="openUpdate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    app_key, version, upgrade_url, content,hide_flg,force_update,open_update
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_app_version
+        where app_key = #{appKey,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectVersionHide" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_app_version
+        where app_key = #{appKey}
+    </select>
+</mapper>

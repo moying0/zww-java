@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.ServiceRequestMapper">
+  <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.ServiceRequest">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sr_number" jdbcType="VARCHAR" property="srNumber" />
+    <result column="sr_type" jdbcType="VARCHAR" property="srType" />
+    <result column="sr_status" jdbcType="VARCHAR" property="srStatus" />
+    <result column="sr_content" jdbcType="VARCHAR" property="srContent" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="created_by" jdbcType="INTEGER" property="createdBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sr_number, sr_type, sr_status, sr_content, created_date, created_by
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_srv_req
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_srv_req
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bfei.icrane.core.models.ServiceRequest">
+    insert into t_srv_req (id, sr_number, sr_type, 
+      sr_status, sr_content, created_date, 
+      created_by)
+    values (#{id,jdbcType=INTEGER}, #{srNumber,jdbcType=VARCHAR}, #{srType,jdbcType=VARCHAR}, 
+      #{srStatus,jdbcType=VARCHAR}, #{srContent,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bfei.icrane.core.models.ServiceRequest">
+    insert into t_srv_req
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="srNumber != null">
+        sr_number,
+      </if>
+      <if test="srType != null">
+        sr_type,
+      </if>
+      <if test="srStatus != null">
+        sr_status,
+      </if>
+      <if test="srContent != null">
+        sr_content,
+      </if>
+      <if test="createdDate != null">
+        created_date,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="srNumber != null">
+        #{srNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="srType != null">
+        #{srType,jdbcType=VARCHAR},
+      </if>
+      <if test="srStatus != null">
+        #{srStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="srContent != null">
+        #{srContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bfei.icrane.core.models.ServiceRequest">
+    update t_srv_req
+    <set>
+      <if test="srNumber != null">
+        sr_number = #{srNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="srType != null">
+        sr_type = #{srType,jdbcType=VARCHAR},
+      </if>
+      <if test="srStatus != null">
+        sr_status = #{srStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="srContent != null">
+        sr_content = #{srContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bfei.icrane.core.models.ServiceRequest">
+    update t_srv_req
+    set sr_number = #{srNumber,jdbcType=VARCHAR},
+      sr_type = #{srType,jdbcType=VARCHAR},
+      sr_status = #{srStatus,jdbcType=VARCHAR},
+      sr_content = #{srContent,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

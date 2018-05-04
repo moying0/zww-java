@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.CatchHistoryDao">
+
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.CatchHistory">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="doll_id" property="dollId" jdbcType="INTEGER"/>
+        <result column="member_id" property="memberId" jdbcType="INTEGER"/>
+        <result column="catch_date" property="catchDate" jdbcType="TIMESTAMP"/>
+        <result column="catch_status" property="catchStatus" jdbcType="VARCHAR"/>
+        <result column="video_url" property="videoUrl" jdbcType="VARCHAR"/>
+        <result column="game_num" property="gameNum" jdbcType="VARCHAR"/>
+        <result column="machine_type" property="machineType" jdbcType="INTEGER"/>
+        <result column="doll_code" property="dollCode" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,doll_id,member_id,catch_date,catch_status,game_num,machine_type,doll_code
+	</sql>
+
+    <select id="totalCount" resultType="java.lang.Integer">
+        select count(1) from t_doll_catch_history where 1=1
+        <if test="memberId!=null">
+            and member_id =#{memberId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultType="CatchHistory">
+        select
+        <include refid="Base_Column_List"/>
+        from t_doll_catch_history
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 抓取记录 -->
+    <select id="selectHistoryDetail" resultType="com.bfei.icrane.core.models.vo.GameHistoryDetail">
+		SELECT
+		dhistory.id historyId ,
+		IFNULL(info.dollName, doll. NAME) NAME,
+		doll.`tbimg_real_path` tbimgRealPath,
+		doll.tbimg_context_path tbimgContextPath,
+		doll.tbimg_file_name tbimgFileName,
+		dhistory.`catch_date` catchDate,
+		dhistory.`catch_status` catchStatus,
+		doll.price expenseCoin,
+		dhistory.game_num gameNum,
+		dhistory.video_url videoUrl,
+		dhistory.doll_id dollId,
+		IFNULL(mcomplaint.check_state,3) checkState
+		FROM
+			`t_doll_catch_history` dhistory
+		LEFT JOIN `t_doll` doll ON (
+			doll.`id` = dhistory.`doll_id`
+		)
+		LEFT JOIN member_complaint mcomplaint ON mcomplaint.member_catch_id = dhistory.id
+		LEFT JOIN doll_info info ON (
+            info.dollCode = dhistory.doll_code
+        )
+		where dhistory.id = #{historyId,jdbcType=INTEGER} and dhistory.member_id = #{userId,jdbcType=INTEGER}
+		ORDER BY dhistory.`catch_date` DESC
+	</select>
+
+    <select id="selectHistoryDetailByGameNum" resultType="com.bfei.icrane.core.models.vo.GameHistoryDetail">
+		SELECT
+		dhistory.id historyId ,
+		IFNULL(info.dollName, doll. NAME) NAME,
+		doll.`tbimg_real_path` tbimgRealPath,
+		doll.tbimg_context_path tbimgContextPath,
+		doll.tbimg_file_name tbimgFileName,
+		dhistory.`catch_date` catchDate,
+		dhistory.`catch_status` catchStatus,
+		doll.price expenseCoin,
+		dhistory.game_num gameNum,
+		dhistory.video_url videoUrl,
+		dhistory.doll_id dollId,
+		IFNULL(mcomplaint.check_state,3) checkState
+		FROM `t_doll_catch_history` dhistory
+		LEFT JOIN `t_doll` doll ON (doll.`id`=dhistory.`doll_id`)
+		LEFT JOIN member_complaint mcomplaint ON mcomplaint.member_catch_id = dhistory.id
+		LEFT JOIN doll_info info ON (
+            info.dollCode = dhistory.doll_code
+        )
+		where dhistory.game_num = #{gameNum,jdbcType=VARCHAR} and dhistory.member_id = #{userId,jdbcType=INTEGER}  
+		ORDER BY dhistory.`catch_date` DESC
+	</select>
+
+    <select id="getCatchHistory" resultType="CatchHistory">
+        select
+        <include refid="Base_Column_List"/>
+        from t_doll_catch_history
+        where 1=1
+        <if test="memberId!=null">
+            and member_id =#{memberId,jdbcType=INTEGER}
+        </if>
+        order by catch_date desc
+        limit #{begin},#{pageSize}
+    </select>
+    <select id="queryVideoUrl" resultType="java.lang.String">
+        select video_url from t_doll_catch_history where game_num =#{gameNum,jdbcType=VARCHAR} LIMIT 1;
+    </select>
+    <select id="getRecenGameNum" resultType="java.lang.String">
+        SELECT
+            game_num
+        FROM
+            t_doll_catch_history
+        WHERE
+            doll_id = #{memberId}
+        AND member_id = #{dollId}
+        ORDER BY
+            id DESC
+        LIMIT 1;
+    </select>
+
+    <insert id="insertCatchHistory" parameterType="CatchHistory">
+        insert into t_doll_catch_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dollId != null">
+                doll_id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="catchDate != null">
+                catch_date,
+            </if>
+            <if test="catchStatus != null">
+                catch_status,
+            </if>
+            <if test="videoUrl != null">
+                video_url,
+            </if>
+            <if test="gameNum != null">
+                game_num,
+            </if>
+            <if test="machineType != null">
+                machine_type,
+            </if>
+            <if test="dollCode != null">
+                doll_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dollId != null">
+                #{dollId,jdbcType=INTEGER},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="catchDate != null">
+                #{catchDate,jdbcType=DATE},
+            </if>
+            <if test="catchStatus != null">
+                #{catchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="videoUrl != null">
+                #{videoUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="gameNum != null">
+                #{gameNum,jdbcType=VARCHAR},
+            </if>
+            <if test="machineType != null">
+                #{machineType,jdbcType=INTEGER},
+            </if>
+            <if test="dollCode != null">
+                #{dollCode,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <!--补填游戏结果-->
+    <update id="updateCatchHistory">
+        update t_doll_catch_history
+        <set>
+            <if test="catchStatus != null">
+                catch_status=#{catchStatus,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where game_num = #{gameNum,jdbcType=VARCHAR} and member_id = #{memberId,jdbcType=INTEGER}
+    </update>
+    <!-- 保存上传视频地址 -->
+    <update id="updateVideoUrl">
+   	 update t_doll_catch_history 
+    	set video_url = #{videoUrl,jdbcType=VARCHAR}
+   	    where game_num = #{gameNum,jdbcType=VARCHAR} and member_id = #{userId,jdbcType=INTEGER}
+    </update>
+</mapper>
+
+

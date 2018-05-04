@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.ChargeRulesDao">
+
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.ChargeRules">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="charge_price" property="chargePrice" jdbcType="DECIMAL"/>
+        <result column="coins_charge" property="coinsCharge" jdbcType="INTEGER"/>
+        <result column="coins_offer" property="coinsOffer" jdbcType="INTEGER"/>
+        <result column="superTicket_charge" property="superTicketCharge" jdbcType="INTEGER"/>
+        <result column="superTicket_offer" property="superTicketOffer" jdbcType="INTEGER"/>
+        <result column="discount" property="discount" jdbcType="DECIMAL"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="created_by" property="createdBy" jdbcType="INTEGER"/>
+        <result column="modified_date" property="modifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="modified_by" property="modifiedBy" jdbcType="INTEGER"/>
+        <result column="charge_type" property="chargeType" jdbcType="INTEGER"/>
+        <result column="charge_name" property="chargeName" jdbcType="VARCHAR"/>
+        <result column="orderby" property="orderby" jdbcType="INTEGER"/>
+        <result column="cions_first" property="cionsFirst" jdbcType="INTEGER"/>
+        <result column="charge_times_limit" property="chargeTimesLimit" jdbcType="INTEGER"/>
+        <result column="charge_date_limit" property="chargeDateLimit" jdbcType="INTEGER"/>
+        <result column="rules_status" property="rulesStatus" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, charge_price, coins_charge, coins_offer,superTicket_charge,superTicket_offer, discount, description, created_date,
+    created_by, modified_date, modified_by, charge_type, charge_name, orderby, cions_first, charge_times_limit, charge_date_limit,rules_status
+  	</sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_charge_rules
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByWhere" resultMap="BaseResultMap" parameterType="ChargeRules">
+        select
+        <include refid="Base_Column_List"/>
+        from t_charge_rules
+        where 1=1
+        <if test="id != null">
+            AND id = #{id,jdbcType=INTEGER},
+        </if>
+        <if test="chargePrice != null">
+            AND charge_price = #{charge_price,jdbcType=DECIMAL},
+        </if>
+        <if test="coinsCharge != null">
+            AND coins_charge = #{coinsCharge,jdbcType=INTEGER},
+        </if>
+        <if test="coinsOffer != null">
+            AND coins_offer = #{coinsOffer,jdbcType=INTEGER},
+        </if>
+        <if test="superTicketCharge != null">
+            AND superTicket_charge = #{superTicketCharge,jdbcType=INTEGER},
+        </if>
+        <if test="superTicketOffer != null">
+            AND superTicket_offer = #{superTicketOffer,jdbcType=INTEGER},
+        </if>
+        <if test="discount != null">
+            AND discount = #{discount,jdbcType=DECIMAL},
+        </if>
+        <if test="description != null">
+            AND description = #{description,jdbcType=VARCHAR},
+        </if>
+        <if test="createdDate != null">
+            AND created_date = #{createdDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="chargeType != null">
+            AND charge_type = #{chargeType,jdbcType=INTEGER},
+        </if>
+        <if test="chargeName != null">
+            AND charge_name = #{chargeName,jdbcType=VARCHAR},
+        </if>
+        <if test="orderby != null">
+            AND orderby = #{orderby,jdbcType=INTEGER},
+        </if>
+        <if test="cionsFirst != null">
+            AND cions_first = #{cionsFirst,jdbcType=INTEGER},
+        </if>
+        <if test="chargeTimesLimit != null">
+            AND charge_times_limit = #{chargeTimesLimit,jdbcType=INTEGER},
+        </if>
+        <if test="chargeDateLimit != null">
+            AND charge_date_limit = #{chargeDateLimit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="getChargeRules" resultType="ChargeRules" parameterType="ChargeRules">
+        <!-- 具体的sql -->
+        SELECT
+        <include refid="Base_Column_List"/>
+        from t_charge_rules WHERE
+        rules_status = 1 order by orderby asc
+    </select>
+
+    <!--后台使用-->
+    <select id="selectChargeRules" resultType="ChargeRules" parameterType="ChargeRules">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from t_charge_rules
+        order by orderby asc
+    </select>
+    <select id="getChargeRulesByType" resultType="com.bfei.icrane.core.models.ChargeRules">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        t_charge_rules
+        WHERE
+        rules_status = 1
+        AND
+        charge_type = #{rulesType}
+        ORDER BY
+        orderby;
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="ChargeRules">
+        update t_charge_rules
+        <set>
+            <if test="chargePrice != null">
+                charge_price = #{chargePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="coinsCharge != null">
+                coins_charge = #{coinsCharge,jdbcType=INTEGER},
+            </if>
+            <if test="coinsOffer != null">
+                coins_offer = #{coinsOffer,jdbcType=INTEGER},
+            </if>
+            <if test="superTicketCharge != null">
+                superTicket_charge = #{superTicketCharge,jdbcType=INTEGER},
+            </if>
+            <if test="superTicketOffer != null">
+                superTicket_offer = #{superTicketOffer,jdbcType=INTEGER},
+            </if>
+            <if test="discount != null">
+                discount = #{discount,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDate != null">
+                created_date = #{createdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="modifiedDate != null">
+                modified_date = #{modifiedDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=INTEGER},
+            </if>
+
+            <if test="chargeType != null">
+                charge_type = #{chargeType,jdbcType=INTEGER},
+            </if>
+
+            <if test="chargeName != null">
+                charge_name = #{chargeName,jdbcType=VARCHAR},
+            </if>
+
+            <if test="orderby != null">
+                orderby = #{orderby,jdbcType=INTEGER},
+            </if>
+
+            <if test="cionsFirst != null">
+                cions_first = #{cionsFirst,jdbcType=INTEGER},
+            </if>
+
+            <if test="rulesStatus != null">
+                rules_status = #{rulesStatus,jdbcType=INTEGER},
+            </if>
+
+            <if test="chargeTimesLimit != null">
+                charge_times_limit = #{chargeTimesLimit,jdbcType=INTEGER},
+            </if>
+
+            <if test="chargeDateLimit != null">
+                charge_date_limit = #{chargeDateLimit,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insertSelective" parameterType="ChargeRules">
+        insert into t_charge_rules
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="chargePrice != null">
+                charge_price,
+            </if>
+            <if test="coinsCharge != null">
+                coins_charge,
+            </if>
+            <if test="coinsOffer != null">
+                coins_offer,
+            </if>
+            <if test="superTicketCharge != null">
+                superTicket_charge,
+            </if>
+            <if test="superTicketOffer != null">
+                superTicket_offer,
+            </if>
+            <if test="discount != null">
+                discount,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createdDate != null">
+                created_date,
+            </if>
+            <if test="createdBy != null">
+                created_by,
+            </if>
+            <if test="modifiedDate != null">
+                modified_date,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="chargeType != null">
+                charge_type,
+            </if>
+            <if test="chargeName != null">
+                charge_name,
+            </if>
+            <if test="orderby != null">
+                orderby,
+            </if>
+            <if test="cionsFirst != null">
+                cions_first,
+            </if>
+            <if test="chargeTimesLimit != null">
+                charge_times_limit,
+            </if>
+            <if test="chargeDateLimit != null">
+                charge_date_limit,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="chargePrice != null">
+                #{chargePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="coinsCharge != null">
+                #{coinsCharge,jdbcType=INTEGER},
+            </if>
+            <if test="coinsOffer != null">
+                #{coinsOffer,jdbcType=INTEGER},
+            </if>
+            <if test="superTicketCharge != null">
+                #{superTicketCharge,jdbcType=INTEGER},
+            </if>
+            <if test="superTicketOffer != null">
+                #{superTicketOffer,jdbcType=INTEGER},
+            </if>
+            <if test="discount != null">
+                #{discount,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDate != null">
+                #{createdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="modifiedDate != null">
+                #{modifiedDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=INTEGER},
+            </if>
+            <if test="chargeType != null">
+                #{chargeType,jdbcType=INTEGER},
+            </if>
+            <if test="chargeName != null">
+                #{chargeName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderby != null">
+                #{orderby,jdbcType=INTEGER},
+            </if>
+            <if test="cionsFirst != null">
+                #{cionsFirst,jdbcType=INTEGER},
+            </if>
+            <if test="chargeTimesLimit != null">
+                #{chargeTimesLimit,jdbcType=INTEGER},
+            </if>
+            <if test="chargeDateLimit != null">
+                #{chargeDateLimit,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_charge_rules
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

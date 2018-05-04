@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfei.icrane.core.dao.DollInfoDao">
+
+    <resultMap id="BaseResultMap" type="com.bfei.icrane.core.models.DollInfo">
+        <id column="id" property="id"/>
+        <result column="dollName" property="dollName"/>
+        <result column="dollTotal" property="dollTotal"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="addTime" property="addTime"/>
+        <result column="dollCode" property="dollCode"/>
+        <association property="online" javaType="boolean"
+                     select="com.bfei.icrane.core.dao.DollInfoDao.selectOnline" column="dollCode">
+        </association>
+    </resultMap>
+
+    <select id="selectOnline" resultType="boolean">
+        SELECT
+            IF (COUNT(id) > 0, 1, 0) ONLINE
+        FROM
+            t_doll a
+        WHERE
+            (
+                machine_status = '空闲中'
+                OR machine_status = '游戏中'
+            )
+        AND a.machine_url IN (
+            SELECT
+                machine_name
+            FROM
+                machine_status
+            WHERE
+                machine_state = 'ONLINE'
+            AND rtmp_state = '开启'
+        )
+        AND delete_status = 1
+        AND a.doll_ID = #{dollCode}
+        LIMIT 1;
+    </select>
+
+    <select id="selectDollInfoList" resultType="com.bfei.icrane.core.models.DollInfo">
+		select
+		id,dollName,dollTotal,img_url imgUrl,addTime,dollCode
+		from doll_info
+	</select>
+
+    <select id="selectDollInfoById" parameterType="java.lang.Integer" resultType="com.bfei.icrane.core.models.DollInfo">
+		select
+		id,dollName,dollTotal,img_url imgUrl,addTime,dollCode
+		from doll_info
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+    <select id="selectDollInfoByDollCode" resultType="com.bfei.icrane.core.models.DollInfo">
+		SELECT
+			*
+		FROM
+			doll_info
+		WHERE
+			dollCode = #{dollCode};
+	</select>
+
+    <select id="selectByLikeDollCode" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        doll_info
+        where
+        dollCode IN
+        <foreach collection="set" separator="," item="item" index="index" open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>
