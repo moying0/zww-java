@@ -47,6 +47,7 @@ public class AboutUsController {
     @ResponseBody
     public Map<String, Object> getAboutUs(String code) throws Exception {
         //logger.info("关于我们接口参数code=" + code);
+
         Map<String, Object> resultMap = new HashedMap<String, Object>();
         try {
             SystemPref systemPref = aboutUsService.selectByPrimaryKey(code);
