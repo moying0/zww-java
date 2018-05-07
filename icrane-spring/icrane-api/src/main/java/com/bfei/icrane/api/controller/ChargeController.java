@@ -18,7 +18,9 @@ import com.bfei.icrane.api.service.MemberService;
 import com.bfei.icrane.core.models.Charge;
 import com.bfei.icrane.core.models.Member;
 import com.bfei.icrane.core.service.ValidateTokenService;
-
+/**
+ * 充值
+ */
 @Controller
 @RequestMapping(value = "/charge")
 @CrossOrigin

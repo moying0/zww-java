@@ -22,6 +22,9 @@ import com.bfei.icrane.core.models.CatchHistory;
 import com.bfei.icrane.core.models.vo.GameHistoryDetail;
 import com.bfei.icrane.core.service.ValidateTokenService;
 
+/**
+ * 抓取记录
+ */
 @Controller
 @CrossOrigin
 @RequestMapping(value = "/catch")
@@ -115,12 +118,12 @@ public class CatchHistoryController {
         }
     }
 
-    // 添加抓取记录
+    // 根据条件获取抓取记录详情
     @RequestMapping(value = "/catchDetailByGameNum", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> catchDetailByGameNum(String gameNum, Integer userId, String token)
             throws Exception {
-        logger.info("获取抓取记录详情参数：" + "gameNum=" + gameNum + "userId=" + userId + "," + "token=" + token);
+        logger.info("根据条件获取抓取记录详情参数：" + "gameNum=" + gameNum + "userId=" + userId + "," + "token=" + token);
         Map<String, Object> resultMap = new HashedMap<String, Object>();
         try {
             // 验证token有效性
@@ -143,16 +146,16 @@ public class CatchHistoryController {
                 resultMap.put("statusCode", Enviroment.RETURN_FAILE_CODE);
                 resultMap.put("message", Enviroment.RETURN_FAILE_MESSAGE);
             }
-            logger.info("添加抓取记录结果resultMap=" + resultMap);
+            logger.info("根据条件获取抓取记录详情resultMap=" + resultMap);
             return resultMap;
         } catch (Exception e) {
-            logger.error("添加抓取记录出错", e);
+            logger.error("根据条件获取抓取记录详情出错", e);
             throw e;
         }
     }
 
 
-    // 添加抓取记录
+    // 获取游戏视频上传详情
     @RequestMapping(value = "/uploadVideo", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> uploadVideo(String gameNum, String videoUrl, Integer userId, String token)
@@ -184,10 +187,10 @@ public class CatchHistoryController {
                 resultMap.put("statusCode", Enviroment.RETURN_FAILE_CODE);
                 resultMap.put("message", Enviroment.RETURN_FAILE_MESSAGE);
             }
-            logger.info("添加抓取记录结果resultMap=" + resultMap);
+            logger.info("获取游戏视频上传详情结果resultMap=" + resultMap);
             return resultMap;
         } catch (Exception e) {
-            logger.error("添加抓取记录出错", e);
+            logger.error("获取游戏视频上传详情出错", e);
             throw e;
         }
     }

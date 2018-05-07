@@ -40,7 +40,7 @@ public class AboutUsController {
      * 关于我们
      *
      * @param code
-     * @return
+     * @returnk
      * @throws Exception
      */
     @RequestMapping(value = "/getAboutUs", method = RequestMethod.POST)

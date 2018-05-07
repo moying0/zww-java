@@ -23,7 +23,9 @@ import com.bfei.icrane.common.util.Enviroment;
 import com.bfei.icrane.core.models.ChargeRules;
 import com.bfei.icrane.core.models.SystemPref;
 import com.bfei.icrane.core.service.ValidateTokenService;
-
+/**
+ * 充值规则
+ */
 @Controller
 @RequestMapping(value = "/chargeRules")
 @CrossOrigin
