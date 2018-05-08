@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="icrane-core-0.0.1">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/icrane-core/target/icrane-core-0.0.1.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>
