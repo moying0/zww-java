@@ -17,14 +17,14 @@
 <link rel="stylesheet" type="text/css" href="${path}/lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="${path}/static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="${path}/static/h-ui.admin/css/style.css" />
-<title>365抓娃娃</title>
-<meta name="keywords" content="365抓娃娃">
-<meta name="description" content="365抓娃娃，在线直播抓娃娃">
+<title>网搜抓娃娃</title>
+<meta name="keywords" content="网搜抓娃娃">
+<meta name="description" content="网搜抓娃娃，在线直播抓娃娃">
 </head>
 <body>
 <header class="navbar-wrapper">
 	<div class="navbar navbar-fixed-top">
-		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="">365抓娃娃Admin</a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="">365抓娃娃</a> 
+		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="">网搜抓娃娃Admin</a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="">网搜抓娃娃</a>
 			<span class="logo navbar-slogan f-l mr-10 hidden-xs">V1.0</span> 
 			<a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
 		<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">

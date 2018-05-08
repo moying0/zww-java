@@ -3,8 +3,8 @@ package com.bfei.icrane.common.wx.utils;
 
 public class WxConfig {
     //微信商户信息
-    public final static String APPID = "wxcb4254f4b131fc12";
-    public final static String SECRET = "ed958469e6ee8a343daca01b3c685ba1";
+    public final static String APPID = "";
+    public final static String SECRET = "";
     public final static String PARTNER = "";
     public final static String PARTNERKEY = "";
 
@@ -21,11 +21,11 @@ public class WxConfig {
     public final static String XYJPARTNERKEY = "bnbcearMqGz4DGSQMZj0CBgDb4RfTkDC";
 
     //公众号信息
-    public final static String GZHAPPID = "wx42ac1f22ae0225f3";
-    public final static String GZHTOKEN = "nbnydgl";
+    public final static String GZHAPPID = "wxcb4254f4b131fc12";
+    public final static String GZHTOKEN = "lanaokj";
     public final static String GZHPARTNERKEY = "svM34iakaVkbLEMjPNn4bbsMzR1fllIQ";
     public final static String ENCODINGAESKEY = "HhcrKuX11UdS5vF7eU8xXMWs6xLLjuhaHuIihCcqK66";
-    public final static String GZHSECRET = "6382ef530107642121fa2743b110aaa4";
+    public final static String GZHSECRET = "ed958469e6ee8a343daca01b3c685ba1";
     public final static String GZHURLBODY = "http://lanao.nat300.top/icrane/api";
 
     //小程序信息

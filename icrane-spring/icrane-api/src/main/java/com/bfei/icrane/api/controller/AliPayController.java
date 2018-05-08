@@ -108,9 +108,9 @@ public class AliPayController {
                     }
                 } else {
                     if (new BigDecimal(vip.getDiscount()).compareTo(new BigDecimal(10)) < 0) {
-                        model.setSubject("365抓娃娃-" + chargeRules.getChargeName() + "-" + chargeRules.getDescription() + "-" + vip.getName() + vip.getDiscount() + "折");
+                        model.setSubject("网搜抓娃娃-" + chargeRules.getChargeName() + "-" + chargeRules.getDescription() + "-" + vip.getName() + vip.getDiscount() + "折");
                     } else {
-                        model.setSubject("365抓娃娃-" + chargeRules.getChargeName());
+                        model.setSubject("网搜抓娃娃-" + chargeRules.getChargeName());
                     }
                 }
                 //商户订单号

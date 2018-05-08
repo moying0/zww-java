@@ -178,9 +178,9 @@ public class WeixinServiceImpl implements IWeixinService {
                         "    \"touser\": \"" + FromUserName + "\",\n" +
                         "    \"msgtype\": \"link\",\n" +
                         "    \"link\": {\n" +
-                        "          \"title\": \"365抓娃娃\",\n" +
+                        "          \"title\": \"网搜抓娃娃\",\n" +
                         "          \"description\": \"给朕来抓\",\n" +
-                        "          \"url\": \"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx42ac1f22ae0225f3&redirect_uri=http%3A%2F%2Flanao.nat300.top/icrane/api/h5login&response_type=code&scope=snsapi_userinfo&state=weixin&connect_redirect=1#wechat_redirect\",\n" +
+                        "          \"url\": \"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+WxConfig.GZHAPPID+"&redirect_uri=http%3A%2F%2Flanao.nat300.top/icrane/api/h5login&response_type=code&scope=snsapi_userinfo&state=weixin&connect_redirect=1#wechat_redirect\",\n" +
                         "          \"thumb_url\": \"http://zww-image-dev.oss-cn-shanghai.aliyuncs.com/fa338152-e5e4-401d-9ea9-b06fdba7db17.jpg?Expires=5122493966&OSSAccessKeyId=LTAIR9bpEjEQwnHO&Signature=dsYX6mBF6tDZaZTg%2FFvDlU6waKo%3D\"\n" +
                         "    }\n" +
                         "}";

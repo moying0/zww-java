@@ -386,7 +386,7 @@ public class LoginServiceImpl implements LoginService {
         PropFileManager propFileMgr = new PropFileManager("interface.properties");
         try {
             // 发送短信
-            if (AliyunServiceImpl.getInstance().sendSMSForCode(mobile, "365抓娃娃",
+            if (AliyunServiceImpl.getInstance().sendSMSForCode(mobile, "网搜抓娃娃",
                     propFileMgr.getProperty("aliyun.smsModelCode.reg"), smsCode)) {
                 //验证码信息存入redis
                 redisUtil.setString(RedisKeyGenerator.getCodeLoginKey(mobile), smsCode, Enviroment.SMS_ENDTIME);

@@ -121,7 +121,7 @@ public class WxPayController {
                 if ("xiaoyaojing".equals(packageName)) {
                     body = "小妖精抓抓乐";
                 } else {
-                    body = "365支付";
+                    body = "网搜支付";
                 }
                 // 附加数据
                 String attach = memberId + "";
@@ -165,7 +165,7 @@ public class WxPayController {
                 }
                 String gzhopenId = memberService.selectGzhopenId(memberId);
                 if ("老子是公众号".equals(IP) && StringUtils.isEmpty(gzhopenId)) {
-                    return IcraneResult.build(Enviroment.RETURN_FAILE, Enviroment.RETURN_FAILE_CODE, "公众号支付接口获取预支付订单失败,请先关注365抓娃娃公众号");
+                    return IcraneResult.build(Enviroment.RETURN_FAILE, Enviroment.RETURN_FAILE_CODE, "公众号支付接口获取预支付订单失败,请先关注网搜抓娃娃公众号");
                 }
                 if ("老子是公众号".equals(IP)) {
                     packageParams.put("openid", gzhopenId);

@@ -25,7 +25,7 @@
 </head>
 <body>
 <div class="page-container">
-	<p class="f-20 text-shadow" align="middle">欢迎使用365抓娃娃管理系统 ！</p>
+	<p class="f-20 text-shadow" align="middle">欢迎使用网搜娃娃管理系统 ！</p>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
 </body>

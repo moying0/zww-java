@@ -14,9 +14,9 @@
 <link href="${path }/static/h-ui.admin/css/H-ui.login.css" rel="stylesheet" type="text/css" />
 <link href="${path }/static/h-ui.admin/css/style.css" rel="stylesheet" type="text/css" />
 <link href="${path }/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
-<title>365抓娃娃后台登录</title>
-<meta name="keywords" content="365抓娃娃后台管理系统">
-<meta name="description" content="365抓娃娃后台管理系统">
+<title>网搜抓娃娃后台登录</title>
+<meta name="keywords" content="网搜抓娃娃后台管理系统">
+<meta name="description" content="网搜抓娃娃后台管理系统">
 </head>
 <body>
 <input type="hidden" id="TenantId" name="TenantId" value="" />
@@ -58,7 +58,7 @@
     </form>
   </div>
 </div>
-<div class="footer">Copyright 365抓娃娃 2015-2017</div>
+<div class="footer">Copyright 网搜抓娃娃 2015-2017</div>
 <script type="text/javascript" src="${path }/lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="${path }/static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript">

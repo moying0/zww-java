@@ -1061,7 +1061,7 @@ function stopDefault(e) {
 		var options = e.data;
 		if (!e.isDefaultPrevented()) { // if event has been canceled, don't proceed
 			e.preventDefault();
-			$(e.target).ajaxSubmit(options); // #365
+			$(e.target).ajaxSubmit(options); //
 		}
 	}
 

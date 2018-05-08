@@ -67,7 +67,7 @@ public class PaySerciceImpl implements PayService {
             // 随机数
             String nonce_str = strReq;
             // 商品描述根据情况修改
-            String body = "365支付";
+            String body = "网搜支付";
             // 附加数据
             String attach = memberId + "";
             // 商户订单号
@@ -169,7 +169,7 @@ public class PaySerciceImpl implements PayService {
             //商品类型1：实物交易；0：虚拟交易。默认为1（实物交易）。
             model.setGoodsType("0");
             //商品名称
-            model.setSubject("365抓娃娃-" + chargeRules.getChargeName() + "-" + chargeRules.getDescription());
+            model.setSubject("网搜抓娃娃-" + chargeRules.getChargeName() + "-" + chargeRules.getDescription());
             //商户订单号
             model.setOutTradeNo(out_trade_no);
             //该笔订单允许的最晚付款时间，逾期将关闭交易。
