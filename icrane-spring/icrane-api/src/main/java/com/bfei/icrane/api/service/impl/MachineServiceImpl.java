@@ -29,7 +29,6 @@ public class MachineServiceImpl  {
 	private static Integer port =Integer.parseInt(propFileMgr.getProperty("machinePort"));
 	
 	public static ExecutorService machineCachedPool =new ThreadPoolExecutor(0, 6000, 0L, TimeUnit.SECONDS,new SynchronousQueue<Runnable>());
-	//"47.100.113.59";
 	//private static String serverIp = "172.19.172.240";//内网 
 	//private static Integer port = 2345;
 	
