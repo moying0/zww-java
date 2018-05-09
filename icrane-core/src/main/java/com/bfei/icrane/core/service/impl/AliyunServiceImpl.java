@@ -61,17 +61,16 @@ public class AliyunServiceImpl implements AliyunService {
         String accessKey = propFileMgr.getProperty("aliyun.accessKey");
         String accessSecret = propFileMgr.getProperty("aliyun.accessSecret");
         String mnsAccountEndPoint = propFileMgr.getProperty("aliyun.mnsAccountEndPoint");
-
+        System.out.println(accessKey + "----" + accessSecret +  "----" + mnsAccountEndPoint);
         //初始化Iot套件SDK客户端
         try {
-            DefaultProfile.addEndpoint("cn-shanghai", "cn-shanghai", "Iot", "iot.cn-shanghai.aliyuncs.com");
+            DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "Iot", "iot.cn-hangzhou.aliyuncs.com");
         } catch (ClientException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        IClientProfile iotProfile = DefaultProfile.getProfile("cn-shanghai", accessKey, accessSecret);
+        IClientProfile iotProfile = DefaultProfile.getProfile("cn-hangzhou", accessKey, accessSecret);
         iotClient = new DefaultAcsClient(iotProfile);
-
         //初始化MNS SDK客户端
         CloudAccount account = new CloudAccount(
                 accessKey,
@@ -80,9 +79,9 @@ public class AliyunServiceImpl implements AliyunService {
         mnsClient = account.getMNSClient();
 
         //初始化短信ascClient,暂时不支持多region
-        IClientProfile smsProfile = DefaultProfile.getProfile("cn-shanghai", accessKey, accessSecret);
+        IClientProfile smsProfile = DefaultProfile.getProfile("cn-hangzhou", accessKey, accessSecret);
         try {
-            DefaultProfile.addEndpoint("cn-shanghai", "cn-shanghai", product, domain);
+            DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
         } catch (ClientException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -90,7 +89,7 @@ public class AliyunServiceImpl implements AliyunService {
         acsClient = new DefaultAcsClient(smsProfile);
 
         //初始化OSS客户端
-        ossClient = new OSSClient("http://oss-cn-shanghai.aliyuncs.com", accessKey, accessSecret);
+        ossClient = new OSSClient("http://oss-cn-hangzhou.aliyuncs.com", accessKey, accessSecret);
     }
 
     public Object pubMessageIot(String ProductKey, String topicName, String message, int... Qos) throws ServerException, ClientException {
@@ -187,6 +186,7 @@ public class AliyunServiceImpl implements AliyunService {
         }
         return false;
     }
+
 
     //上传文件流到OSS
     @Override

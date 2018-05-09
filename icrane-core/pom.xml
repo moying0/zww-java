@@ -304,9 +304,6 @@
     <profiles>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <filters.env>dev</filters.env>
             </properties>
@@ -319,6 +316,9 @@
         </profile>
         <profile>
             <id>loc</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <filters.env>loc</filters.env>
             </properties>
